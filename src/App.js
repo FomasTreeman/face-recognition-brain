@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Particles from 'react-particles-js';
+import Particles from 'react-tsparticles';
 import Clarifai from 'clarifai';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Navigation from './components/Navigation/Navigation';
@@ -12,17 +12,29 @@ import './App.css';
 
 //You must add your own API key here from Clarifai.
 const app = new Clarifai.App({
- apiKey: 'YOUR API KEY HERE'
+ apiKey: '6277ed785af8430bb5b3a1864748b453'
 });
 
 const particlesOptions = {
-  particles: {
-    number: {
-      value: 30,
-      density: {
+  number: {
+    value: 30,
+    density: {
+      enable: true,
+      value_area: 800
+    }
+  },
+  interactivity: {
+    detectsOn: "canvas",
+    events: {
+      onClick: {
         enable: true,
-        value_area: 800
-      }
+        mode: "push",
+      },
+      onHover: {
+        enable: true,
+        mode: "bubble",
+      },
+      resize: true,
     }
   }
 }
@@ -30,6 +42,8 @@ const particlesOptions = {
 class App extends Component {
   constructor() {
     super();
+    this.particlesInit = this.particlesInit.bind(this),
+    this.particlesLoaded = this.particlesLoaded.bind(this);
     this.state = {
       input: '',
       imageUrl: '',
@@ -45,6 +59,10 @@ class App extends Component {
       }
     }
   }
+
+  particlesInit(main) {}
+
+  particlesLoaded(container) {}
 
   loadUser = (data) => {
     this.setState({user: {
@@ -126,9 +144,14 @@ class App extends Component {
     const { isSignedIn, imageUrl, route, box } = this.state;
     return (
       <div className="App">
-         <Particles className='particles'
-          params={particlesOptions}
-        />
+        <div className = 'particles'>
+          <Particles
+            id="tsparticles"
+            init={this.particlesInit}
+            loaded={this.particlesLoaded}
+            options= {particlesOptions}
+          />
+        </div>
         <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
         { route === 'home'
           ? <div>
